@@ -1,0 +1,40 @@
+
+.event_list .visitable {
+  height: auto;
+}
+
+.sidebar_buttons {
+  float: right;
+  width:24px;
+  visibility: hidden;
+}
+
+.visitable:hover .sidebar_buttons {
+  visibility: visible;
+}
+
+.sidebar_buttons .button {
+  width: 24px;
+  line-height: 16px;
+  float: left;
+  margin-top: 0;
+  color: white;
+}
+
+.sidebar_buttons .button.downvote {
+  border-top: 0;
+  background-color: #bf8c1d;
+}
+
+.sidebar_buttons .button.upvote {
+  background-color: #6dcc3d;
+}
+
+.paging_buttons .button {
+  line-height: 16px;
+  width: 24px;
+  margin: 0;
+}
+.paging_buttons .button.next {
+  margin-left: 1em;
+}

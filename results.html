@@ -133,7 +133,7 @@
 
 <div id="js_dealform_querycenter" class="dealform_querycenter cf  dealform_homepage calendar_state_indicator">
 <div class="dealform_query_go">
-<button type="button" id="js_go" class="button search">
+<button type="button" id="js_go" class="button search" onclick="search();">
                                     Suchen
                             </button>
 </div>
@@ -145,7 +145,7 @@
 	<input type="text" id="js_querystring_shadow" class="querystring_shadow placeholder "
                    autocomplete="off"
                    spellcheck="false"
-                   data-default="Düsseldorf"
+                   data-default="Köln"
                    value=""/>
 
    	<input type="text" id="js_querystring" class="querystring " tabindex="1" autocomplete="off"
@@ -154,7 +154,7 @@
                    data-pathid="15475"
                    data-initialized="0"
                    onkeydown="if(0==this.getAttribute('data-initialized')){document.getElementById('js_querystring_shadow').value=''}"
-                   value="Düsseldorf"/>
+                   value="Köln"/>
 
 
 		                  <div id="js_short_dealinfos" class="short_dealinfos  userdefined">
@@ -662,9 +662,6 @@
 <!-- Einzelne Hotelergebnisse -->
 
 <ul id="js_itemlist" class="itemlist hotellist group">
-<li>
-HHH
-</li>
                                 </ul>
                                                             </div>
                             <div class="hotellistbottom" id="js_pagination" style="display:none;">

@@ -43,6 +43,9 @@
   width: 24px;
   margin: 0;
 }
+.paging_buttons .button.prev {
+  margin-right: 1em;
+}
 .paging_buttons .button.next {
   margin-left: 1em;
 }

@@ -1,6 +1,8 @@
 (function() {
-  var template = '<li class="visitable">'+
-      '<div class="info">'+
+  var currentPage = 0,
+      currentData = [],
+      template = '<li class="visitable">'+
+      '<div class="info" data-id="{{ID}}">'+
         '<div class="sidebar_buttons">'+
           '<button class="button upvote"><span class="img_sprite_moon"></span></button>'+
           '<button class="button downvote"><span class="img_sprite_moon"></span></button>'+
@@ -19,7 +21,7 @@
     '</li>';
 
   function renderEvent(evt) {
-    var tpl = template.replace(/{{([^}]+)}}/g, function(full, key, idx) {
+    var tpl = template.replace(/{{([^}]+)}}/g, function(full, key) {
         return evt[key]
     })
     return jQuery(tpl)[0]
@@ -27,24 +29,22 @@
 
   function renderEventList(list, skip) {
     var fragment = document.createDocumentFragment()
-    var evtItem = null
-    var start = skip || 0
+    var start    = skip || 0
 
     for(var i=start;i<Math.min(list.length, 5+start);i++) {
-        evtItem = renderEvent(list[i])
-        fragment.appendChild(evtItem)
+        fragment.appendChild(renderEvent(list[i]))
     }
     return fragment
   }
 
-  function updateEventList(data, page) {
-    var x = renderEventList(data, page*5)
-    jQuery('.event_list').html('').append(x)
-    console.log(x)
+  function updateEventList() {
+    $('.event_list')
+      .html('')
+      .append(
+        renderEventList(currentData, currentPage*5)
+      )
   }
 
-  var currentPage = 0,
-      currentData = []
 
   function updateEventSearch(qry) {
     $.getJSON('./testdata/events.json')
@@ -64,6 +64,77 @@
     $('.paging_buttons .current_page').text(currentPage + 1)
     $('.paging_buttons .total_pages').text(total)
   }
+
+  function submitUpvote(id) {
+    //TODO: send to backend
+
+//    updateEventList()
+//    updatePagination()
+  }
+
+  function submitDownvote(id) {
+    //TODO: send to backend
+    for(var i=0;i<currentData.length;i++) {
+      if(currentData[i].ID === id) {
+        var data = currentData[i]
+        currentData.splice(i, 1)
+        break
+      }
+    }
+    updateEventList()
+    updatePagination()
+
+    if($('#event_popup').is(':visible')) {
+      if(data.ID === lastPopupId) {
+        $('#event_popup').hide()
+        lastPopupId = undefined
+      } else {
+        openPopup(lastPopupId)
+      }
+    }
+  }
+
+  function openPopup(id) {
+      var ele = $('.event_list .visitable .info[data-id="'+id+'"]')
+      console.log(ele, id)
+      var posTop = ele.offset().top
+      var height = ele.innerHeight()
+      var popupTop = posTop + (height/2) - 125 // POPUP HEIGHT
+      $('#event_popup').css('top', popupTop).show()
+  }
+
+  var lastPopupId = undefined
+  $('.event_list').on('click', '.visitable', function(evt) {
+    var id = $('.info', this).data('id')
+    if(lastPopupId !== id) {
+      openPopup(id)
+      lastPopupId = id
+      evt.preventDefault()
+      return false
+    }
+  })
+
+  $('.event_list').on('click', '.upvote', function(evt) {
+    var id = $(this).closest('.info').data('id')
+    submitUpvote(id)
+    evt.preventDefault()
+    return false
+  })
+
+  $('body').on('click', function(evt) {
+    if($('#event_popup').is(':visible')) {
+      $('#event_popup').hide()
+      evt.preventDefault()
+      return false
+    }
+  })
+
+  $('.event_list').on('click', '.downvote', function(evt) {
+    var id = $(this).closest('.info').data('id')
+    submitDownvote(id)
+    evt.preventDefault()
+    return false
+  })
 
   $('.paging_buttons .next').on('click', function() {
     if((currentPage + 1) * 5 >= currentData.length) {

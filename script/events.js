@@ -1,6 +1,7 @@
 (function() {
   var currentPage = 0,
       currentData = [],
+      backendUrl  = 'http://trivago.masch.it' // 'http://192.168.245.123:8000/'
       template = '<li class="visitable">'+
       '<div class="info" data-id="{{id}}">'+
         '<div class="sidebar_buttons">'+
@@ -50,7 +51,7 @@
 
   function updateEventSearch(qry) {
     var query = encodeURIComponent($('#js_querystring').val())
-    $.getJSON('http://192.168.245.123:8000/events/?query=' + query)
+    $.getJSON(backendUrl + '/events/?query=' + query)
       .done(function(data) {
         currentData = data
         currentPage = 0
@@ -76,7 +77,11 @@
   }
 
   function submitDownvote(id) {
-    //TODO: send to backend
+
+    $.post(backendUrl + '/events/blockEvent', { id: id }, function(resp) {
+      console.log(resp)
+    })
+
     for(var i=0;i<currentData.length;i++) {
       if(currentData[i].ID === id) {
         var data = currentData[i]

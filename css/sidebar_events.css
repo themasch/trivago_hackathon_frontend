@@ -50,7 +50,7 @@
 #event_popup {
   position: absolute;
   top: 200px;
-  left: 650px;
+  left: 450px;
   z-index: 999999;
 
   background-color: white;
@@ -58,8 +58,8 @@
   border-radius: 2px;
   box-shadow: -1px 0px 3px silver;
 
-  height: 250px;
-  width: 300px;
+  min-height: 250px;
+  width: 500px;
 
   display: none;
 }
@@ -76,4 +76,18 @@
   border-bottom: 25px solid transparent;
   border-left: 25px solid lightblue;
   border-top: 25px solid transparent;
+}
+
+#event_popup h1 {
+  font-weight: bold;
+  font-size: 1.1;
+}
+
+
+#event_popup .content {
+  padding: 5px;
+}
+
+#event_popup img {
+  float: right;
 }

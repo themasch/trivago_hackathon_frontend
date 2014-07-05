@@ -16,16 +16,31 @@
           '<em>{{title}}</em>'+
         '</div>'+
         '<div class="js_sidebaritem_city sidebaritem_city_text_wrap">'+
-          '{{begin}}'+
+          '{{begin_f}}'+
         '</div>'+
         '<div class="js_sidebaritem_city sidebaritem_city_text_wrap">'+
-          '<a href="{{venue_url}}">{{venue}}</a>'+
+          '{{venue}}'+
         '</div>'+
       '</div>'+
     '</li>'
-      tplFunc = Handlebars.compile(template);
+      detailTemplate =
+        '<h1>{{title}}</h1>'+
+        '{{#if image}}'+ '<img src="{{image}}" alt="">'+ '{{/if}}' +
+        '<br />'+
+        '<em>'+
+          '{{begin_f}}'+
+        '</em><br /><br />'+
+        '<div style="text-algin:justify">'+
+          '{{{desc}}}'+
+        '</div>'+
+        '<a class="venue" target="_blank" href="{{venue_url}}">{{venue}}</a>',
+      tplFunc = Handlebars.compile(template),
+      tplDetailFunc = Handlebars.compile(detailTemplate);
+
+  moment.lang('de')
 
   function renderEvent(evt) {
+    evt.begin_f = moment(evt.begin).format('LLL')
     var tpl = tplFunc(evt)
     return jQuery(tpl)[0]
   }
@@ -69,21 +84,13 @@
     $('.paging_buttons .total_pages').text(total)
   }
 
-  function submitUpvote(id) {
-    //TODO: send to backend
-
-//    updateEventList()
-//    updatePagination()
-  }
-
   function submitDownvote(id) {
 
     $.post(backendUrl + '/events/blockEvent', { id: id }, function(resp) {
       console.log(resp)
     })
-
     for(var i=0;i<currentData.length;i++) {
-      if(currentData[i].ID === id) {
+      if(currentData[i].id === id) {
         var data = currentData[i]
         currentData.splice(i, 1)
         break
@@ -93,7 +100,7 @@
     updatePagination()
 
     if($('#event_popup').is(':visible')) {
-      if(data.ID === lastPopupId) {
+      if(data.id === lastPopupId) {
         $('#event_popup').hide()
         lastPopupId = undefined
       } else {
@@ -102,12 +109,24 @@
     }
   }
 
+  function renderPopupContent(id) {
+    for(var i=0;i<currentData.length;i++) {
+      if(currentData[i].id === id) {
+        return tplDetailFunc(currentData[i])
+      }
+    }
+    return ''
+  }
+
   function openPopup(id) {
       var ele = $('.event_list .visitable .info[data-id="'+id+'"]')
       var posTop = ele.offset().top
       var height = ele.innerHeight()
       var popupTop = posTop + (height/2) - 125 // POPUP HEIGHT
-      $('#event_popup').css('top', popupTop).show()
+      var content = renderPopupContent(id)
+      var left    = ele.offset().left - 535
+      $('#event_popup').css('top', popupTop).css('left', left).show()
+      $('#event_popup .content').html(content)
   }
 
   var lastPopupId = undefined
@@ -128,7 +147,14 @@
     return false
   })
 
+  $('#event_popup').on('click', function(evt) {
+    evt.stopPropagation();
+  })
+
   $('body').on('click', function(evt) {
+    if($.contains($('#event_popup')[0], evt.target)) {
+      return true
+    }
     if($('#event_popup').is(':visible')) {
       $('#event_popup').hide()
       evt.preventDefault()
@@ -162,5 +188,8 @@
   })
 
   $('#js_go').on('click', updateEventSearch)
+  $('.hide_events').on('click', function() {
+    $('.event_sidebar').toggle()
+  })
   updateEventSearch()
 })();

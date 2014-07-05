@@ -2,27 +2,32 @@
   var currentPage = 0,
       currentData = [],
       template = '<li class="visitable">'+
-      '<div class="info" data-id="{{ID}}">'+
+      '<div class="info" data-id="{{id}}">'+
         '<div class="sidebar_buttons">'+
-          '<button class="button upvote"><span class="img_sprite_moon"></span></button>'+
+          //'<button class="button upvote"><span class="img_sprite_moon"></span></button>'+
           '<button class="button downvote"><span class="img_sprite_moon"></span></button>'+
         '</div>'+
-        '<img width="30" height="30" src="http://placehold.it/30x30.png" alt="">'+
+        '<img width="30" height="30" src="{{image_small | default("http://placekitten.io/30x30.png")}}" alt="">'+
         '<div class="js_sidebaritem_city sidebaritem_city_text_wrap">'+
-          '<em>{{NAME}}</em>'+
+          '<em>{{title}}</em>'+
         '</div>'+
         '<div class="js_sidebaritem_city sidebaritem_city_text_wrap">'+
-          '{{DATE}}'+
+          '{{begin}}'+
         '</div>'+
         '<div class="js_sidebaritem_city sidebaritem_city_text_wrap">'+
-          '{{LOCATION}}'+
+          '<a href="{{venue_url}}">{{venue}}</a>'+
         '</div>'+
       '</div>'+
     '</li>';
 
   function renderEvent(evt) {
     var tpl = template.replace(/{{([^}]+)}}/g, function(full, key) {
-        return evt[key]
+        var parts = key.split('|')
+        if(parts.length > 1) {
+
+        } else {
+          return evt[key]
+        }
     })
     return jQuery(tpl)[0]
   }
@@ -47,7 +52,8 @@
 
 
   function updateEventSearch(qry) {
-    $.getJSON('./testdata/events.json')
+    var query = encodeURIComponent($('#js_querystring').val())
+    $.getJSON('http://192.168.245.123:8000/events/?query=' + query)
       .done(function(data) {
         currentData = data
         currentPage = 0
@@ -154,6 +160,6 @@
     updatePagination()
   })
 
-
+  $('#js_go').on('click', updateEventSearch)
   updateEventSearch()
 })();

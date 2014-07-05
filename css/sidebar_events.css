@@ -3,6 +3,14 @@
   height: auto;
 }
 
+.hide_events {
+background-position: -56px -880px;
+height: 16px;
+width: 16px;
+margin: 9px;
+position: absolute;
+}
+
 .sidebar_buttons {
   float: right;
   width:24px;

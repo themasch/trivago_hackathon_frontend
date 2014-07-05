@@ -454,11 +454,14 @@
 
     <div id="js_rightcol" class="sidebar sidebar_simplified ">
     <ul class="sidebar_tabs z_index2 cf">
-        <li class="sidebar_element"> <div>Events</div> </li>
         <li class="sidebar_element">
+            <div class="hide_events img_sprite_moon"></div>
+            <div>Events</div>
+        </li>
+        <li class="event_sidebar sidebar_element">
           <div><input type="text" placeholder="Filter..." style="width:95%" /></div>
         </li>
-        <li class="sidebar_display">
+        <li class="event_sidebar sidebar_display">
 
           <div class="city_list event_list history">
             <ul>
@@ -547,7 +550,7 @@
             </ul>
           </div>
         </li>
-        <li class="sidebar_element">
+        <li class="event_sidebar sidebar_element">
           <div class="paging_buttons">
           <button class="button prev">&lt;</button>
           <span class="current_page"></span> / <span class="total_pages"></span>

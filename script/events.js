@@ -188,5 +188,8 @@
   })
 
   $('#js_go').on('click', updateEventSearch)
+  $('.hide_events').on('click', function() {
+    $('.event_sidebar').toggle()
+  })
   updateEventSearch()
 })();

@@ -77,7 +77,7 @@ function search(){
 
 
 /**
- * Load data from template
+ * Load data from trivago
  * @param callBack
  */
 function loadDataFromTrivago(url, callBack, location)
@@ -103,3 +103,10 @@ xmlhttp.onreadystatechange=function()
 xmlhttp.open("GET",url,true);
 xmlhttp.send();
 }
+
+
+
+jQuery("#js_go").on("click",function(event){
+    event.preventDefault();
+   console.log("HALLO");
+});

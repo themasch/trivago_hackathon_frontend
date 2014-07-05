@@ -6,16 +6,15 @@
 function showResults(){
 	
 	var results;
-	var where = document.getElementById("itemlist hotellist grou"); 
+	var where = document.getElementById("js_itemlist"); 
 
 	for(var q=0; q<10;q++){
 		var newLi = document.createElement("li");
 		
 		newLi.setAttribute('class','hotel item bookmarkable historisable');
 		
-		newLi.innerHTML("HOTEL A");
+		newLi.innerHTML="HOTEL A";
 		
-		newLi.appendChild(newDiv);
 
 		where.appendChild(newLi);
 
@@ -28,3 +27,5 @@ function showResults(){
 	where.appendChild(newP);
 	
 }
+
+showResults();

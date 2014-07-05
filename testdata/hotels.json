@@ -1,0 +1,41 @@
+[
+{
+"location":"Berlin",
+"name":"Ramada Berlin Alexanderplatz",
+"img":"http://imgec.trivago.com/itemimages/57/42/5742_v3_mc.jpeg",
+"preis":"159"
+},
+{
+"location":"Köln",
+"name":"Hilton Köln",
+"img":"http://imgec.trivago.com/itemimages/64/51/6451_v6_mc.jpeg",
+"preis":"59"
+},
+{
+"location":"Köln",
+"name":"CityClass Europa am Dom",
+"img":"http://imgec.trivago.com/itemimages/64/65/6465_v5_mc.jpeg",
+"preis":"219"
+},
+{
+"location":"Köln",
+"name":" Königshof ",
+"img":"http://imgec.trivago.com/itemimages/64/78/6478_v4_mc.jpeg",
+"preis":"159"
+},
+{
+"location":"Bonn",
+"name":"Galerie Design Hotel Bonn",
+"img":"http://imgec.trivago.com/itemimages/62/93/6293_v3_mc.jpeg",
+"preis":"58"
+},
+{
+"location":"Bonn",
+"name":"Akzent am Hohenzollernplatz",
+"img":"http://imgec.trivago.com/itemimages/62/88/6288_v1_mc.jpeg",
+"preis":"42"
+}
+
+
+
+]

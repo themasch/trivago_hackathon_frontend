@@ -19,17 +19,30 @@ function showResults(json, location){
 		
 			counter++;
 		var newLi = document.createElement("li");
+		newLi.setAttribute("class", "hotel item bookmarkable historisable active");
 		
+		
+		
+		
+		var newDivWrapper = document.createElement("div");
+		newDivWrapper.setAttribute("class", "cf item_wrapper");
+		
+		var newDiv = document.createElement("div");
+		newDiv.setAttribute("class", "item_image");
+		newDiv.innerHTML='<img src="'+json[hoteldata].img+'">';
+		newDivWrapper.appendChild(newDiv);
+		
+		var newDiv2 = document.createElement("div");
+		newDiv2.setAttribute("class", "item_prices");
 		var content = "";
-		content += '<b>'+json[hoteldata].name+"</b><br>";
-		content +='<div>';
-		content +='<img src="'+json[hoteldata].img+'">';
-		content += "<i>"+json[hoteldata].preis+"€</i><br>";
-		content += "</div>";
-
+		content += '<h3  class="jsheadline">'+json[hoteldata].name+"</h3>";		
+		content += '<p style="float:right;">'+json[hoteldata].preis+"€</p>";
+		newDiv2.innerHTML=content;
+		newDivWrapper.appendChild(newDiv2);	
 		
-	console.log(content);
-		newLi.innerHTML=content;
+		
+		newLi.appendChild(newDivWrapper);
+
 		where.appendChild(newLi);
 		}
 

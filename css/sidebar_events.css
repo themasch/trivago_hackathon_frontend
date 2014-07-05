@@ -22,20 +22,11 @@
 }
 
 .sidebar_buttons .button.downvote {
-  border-top: 0;
-  background-color: #bf8c1d;
+  border: 0;
 }
 
 .sidebar_buttons .button.downvote span {
-  background-position: -91px -55px;
-}
-.sidebar_buttons .button.upvote span {
-  background-position: -111px -55px;
-}
-
-.sidebar_buttons .button.upvote {
-  background-color: #6dcc3d;
-
+  background-position: -57px -515px;
 }
 
 .paging_buttons .button {

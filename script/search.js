@@ -3,29 +3,41 @@
 /**
  * Output the search results (json)
  */
-function showResults(json){
+function showResults(json, location){
 	
+	console.log("location:"+location+json);
 	var results;
 	var where = document.getElementById("js_itemlist"); 
 
 	while (where.hasChildNodes()) {
 	    where.removeChild(where.lastChild);
 	}
-	
-	
-	var js_hotel_count = document.getElementById("js_hotel_count");
-	js_hotel_count.innerHTML=Object.keys(json).length+" Hotels";
-	
-	
-	for(var hoteldata in json.hotels){
-		console.log(json[hoteldata]);
+		
+	var counter = 0;
+	for(var hoteldata in json){
+		if (json[hoteldata].location == location){
+		
+			counter++;
 		var newLi = document.createElement("li");
 		
-		newLi.innerHTML+=json[hoteldata];
+		var content = "";
+		content += '<b>'+json[hoteldata].name+"</b><br>";
+		content +='<div>';
+		content +='<img src="'+json[hoteldata].img+'">';
+		content += "<i>"+json[hoteldata].preis+"€</i><br>";
+		content += "</div>";
+
 		
+	console.log(content);
+		newLi.innerHTML=content;
 		where.appendChild(newLi);
+		}
 
 	}
+	
+	var js_hotel_count = document.getElementById("js_hotel_count");
+	js_hotel_count.innerHTML=counter + " Hotels";
+
 }
 
 
@@ -38,24 +50,11 @@ function search(){
 	var dateFieldFrom = document.getElementById("date_from").innerHTML;
 	var dateFieldTo = document.getElementById("date_to").innerHTML;
 	
-	var getRequestURL = "./test
-	/*
-	var test={
-			  "hotel": "Zur Glocke"
-			};
-	
-	test.location=searchFieldValue;
-	test.dateFrom=dateFieldFrom;
-	test.dateTo=dateFieldTo;
+	var getRequestURL = "./testdata/hotels.json";
 
 	console.log("location:"+searchFieldValue+" from:"+dateFieldFrom+" to:"+dateFieldTo);
 
-	*/
-	
-	loadDataFromTrivago(getRequestURL, showResults);
-	
-	
-	//showResults(test);
+	loadDataFromTrivago(getRequestURL, showResults, searchFieldValue);
 }
 
 
@@ -68,7 +67,7 @@ function search(){
  * Load data from template
  * @param callBack
  */
-function loadDataFromTrivago(url, callBack)
+function loadDataFromTrivago(url, callBack, location)
 {
 var xmlhttp;
 if (window.XMLHttpRequest)
@@ -85,7 +84,7 @@ xmlhttp.onreadystatechange=function()
     {
 	  
 	var json = JSON.parse(xmlhttp.responseText);
-    callBack(json);
+    callBack(json, location);
     }
   }
 xmlhttp.open("GET",url,true);

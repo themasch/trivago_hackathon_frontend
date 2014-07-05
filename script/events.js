@@ -1,13 +1,17 @@
 (function() {
   var currentPage = 0,
       currentData = [],
+      backendUrl  = 'http://trivago.masch.it' // 'http://192.168.245.123:8000/'
       template = '<li class="visitable">'+
       '<div class="info" data-id="{{id}}">'+
         '<div class="sidebar_buttons">'+
-          //'<button class="button upvote"><span class="img_sprite_moon"></span></button>'+
           '<button class="button downvote"><span class="img_sprite_moon"></span></button>'+
         '</div>'+
-        '<img width="30" height="30" src="{{image_small | default("http://placekitten.io/30x30.png")}}" alt="">'+
+        '{{#if image_small}}'+
+        '<img width="30" height="30" src="{{image_small}}" alt="">'+
+        '{{else}}' +
+        '<img width="30" height="30" src="http://placekitten.com/30/30" alt="">'+
+        '{{/if}}' +
         '<div class="js_sidebaritem_city sidebaritem_city_text_wrap">'+
           '<em>{{title}}</em>'+
         '</div>'+
@@ -18,17 +22,11 @@
           '<a href="{{venue_url}}">{{venue}}</a>'+
         '</div>'+
       '</div>'+
-    '</li>';
+    '</li>'
+      tplFunc = Handlebars.compile(template);
 
   function renderEvent(evt) {
-    var tpl = template.replace(/{{([^}]+)}}/g, function(full, key) {
-        var parts = key.split('|')
-        if(parts.length > 1) {
-
-        } else {
-          return evt[key]
-        }
-    })
+    var tpl = tplFunc(evt)
     return jQuery(tpl)[0]
   }
 
@@ -53,7 +51,7 @@
 
   function updateEventSearch(qry) {
     var query = encodeURIComponent($('#js_querystring').val())
-    $.getJSON('http://192.168.245.123:8000/events/?query=' + query)
+    $.getJSON(backendUrl + '/events/?query=' + query)
       .done(function(data) {
         currentData = data
         currentPage = 0
@@ -79,7 +77,11 @@
   }
 
   function submitDownvote(id) {
-    //TODO: send to backend
+
+    $.post(backendUrl + '/events/blockEvent', { id: id }, function(resp) {
+      console.log(resp)
+    })
+
     for(var i=0;i<currentData.length;i++) {
       if(currentData[i].ID === id) {
         var data = currentData[i]
@@ -102,7 +104,6 @@
 
   function openPopup(id) {
       var ele = $('.event_list .visitable .info[data-id="'+id+'"]')
-      console.log(ele, id)
       var posTop = ele.offset().top
       var height = ele.innerHeight()
       var popupTop = posTop + (height/2) - 125 // POPUP HEIGHT

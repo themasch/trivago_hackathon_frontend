@@ -65,12 +65,9 @@
 
 
   function updateEventSearch(qry) {
-    var query = encodeURIComponent($('#js_querystring').val())
-<<<<<<< HEAD
-    $.getJSON('http://192.168.245.123:8000/search/?location=' + query)
-=======
-    $.getJSON(backendUrl + '/events/?query=' + query)
->>>>>>> 0afb391339e4e35a3ec99fbf7f93200dfa3495ef
+    var location = encodeURIComponent($('#js_querystring').val())
+    var query    = encodeURIComponent($('#event_query').val())
+    $.getJSON(backendUrl + '/events/?location=' + location + '&query=' + query)
       .done(function(data) {
         currentData = data
         currentPage = 0
@@ -192,6 +189,7 @@
   })
 
   $('#js_go').on('click', updateEventSearch)
+
   $('.hide_events').on('click', function() {
     $('.event_sidebar').toggle()
   })

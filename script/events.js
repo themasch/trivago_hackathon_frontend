@@ -2,10 +2,11 @@
   var currentPage = 0,
       currentData = [],
       backendUrl  = 'http://trivago.masch.it' // 'http://192.168.245.123:8000/'
-      template = '<li class="visitable">'+
+      template = '<li class="eventitem">'+
       '<div class="info" data-id="{{id}}">'+
         '<div class="sidebar_buttons">'+
           '<button class="button downvote"><span class="img_sprite_moon"></span></button>'+
+          '<button class="button marker {{#if marked}}marked{{/if}}"><span class="hilden-icons"></span></button>'+
         '</div>'+
         '{{#if image_small}}'+
         '<img width="30" height="30" src="{{image_small}}" alt="">'+
@@ -35,7 +36,8 @@
         '</div>'+
         '<a class="venue" target="_blank" href="{{venue_url}}">{{venue}}</a>',
       tplFunc = Handlebars.compile(template),
-      tplDetailFunc = Handlebars.compile(detailTemplate);
+      tplDetailFunc = Handlebars.compile(detailTemplate),
+      map = undefined;
 
   moment.lang('de')
 
@@ -54,6 +56,7 @@
 
   function renderEvent(evt) {
     evt.begin_f = moment(evt.begin).format('LLL')
+    evt.marked  = markedEvents[evt.id]
     var tpl = tplFunc(evt)
     return jQuery(tpl)[0]
   }
@@ -104,6 +107,33 @@
     $('.paging_buttons .total_pages').text(total)
   }
 
+  var markedEvents = {}
+
+  function markEvent(id) {
+    if(markedEvents[id]) {
+      markedEvents[id].setMap(null)
+      delete markedEvents[id]
+      return false
+    }
+    if(!map) {
+      return false
+    }
+    for(var i=0;i<currentData.length;i++) {
+      if(currentData[i].id === id) {
+        var data = currentData[i]
+        var myLatlng = new google.maps.LatLng(data.lat,data.lng);
+
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            title: data.title
+        });
+        markedEvents[id] = marker
+        return true
+      }
+    }
+  }
+
   function submitDownvote(id) {
 
     $.post(backendUrl + '/events/blockItem', { id: id }, function(resp) {
@@ -139,7 +169,7 @@
   }
 
   function openPopup(id) {
-      var ele = $('.event_list .visitable .info[data-id="'+id+'"]')
+      var ele = $('.event_list .eventitem .info[data-id="'+id+'"]')
       var posTop = ele.offset().top
       var height = ele.innerHeight()
       var popupTop = posTop + (height/2) - 125 // POPUP HEIGHT
@@ -150,7 +180,7 @@
   }
 
   var lastPopupId = undefined
-  $('.event_list').on('click', '.visitable', function(evt) {
+  $('.event_list').on('click', '.eventitem', function(evt) {
     var id = $('.info', this).data('id')
     if(lastPopupId !== id) {
       openPopup(id)
@@ -187,6 +217,15 @@
     submitDownvote(id)
     evt.preventDefault()
     return false
+  }).on('click', '.marker', function(evt) {
+    evt.preventDefault()
+    var id = $(this).closest('.info').data('id')
+    if(markEvent(id)) {
+      $(this).addClass('marked')
+    } else {
+      $(this).removeClass('marked')
+    }
+    return false
   })
 
   $('.paging_buttons .next').on('click', function() {
@@ -219,4 +258,11 @@
     $('.event_sidebar').toggle()
   })
   updateEventSearch()
+
+  var oldRichMarker = window.RichMarker
+  window.RichMarker = function(d) {
+    map = d.map
+    return oldRichMarker.apply(this, arguments)
+  }
+  window.RichMarker.prototype = oldRichMarker.prototype
 })();

@@ -1,5 +1,7 @@
+.eventitem {
 
-.event_list .visitable {
+}
+.event_list .eventitem {
   height: auto;
 }
 
@@ -17,24 +19,40 @@
   visibility: hidden;
 }
 
-.visitable:hover .sidebar_buttons {
+.eventitem:hover .sidebar_buttons {
   visibility: visible;
 }
 
+.hilden-icons {
+  background-image: url('../images/atlas.png');
+  background-repeat: no-repeat;
+}
+span.hilden-icons {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+}
 .sidebar_buttons .button {
   width: 24px;
   line-height: 16px;
   float: left;
   margin-top: 0;
   color: white;
+  border: 0;
 }
 
 .sidebar_buttons .button.downvote {
-  border: 0;
 }
 
 .sidebar_buttons .button.downvote span {
   background-position: -57px -515px;
+}
+.sidebar_buttons .button.marker span {
+  background-position: -33px 0px;
+  margin-top: 3px;
+}
+.sidebar_buttons .button.marker.marked span {
+  background-position: -19px 0px;
 }
 
 .paging_buttons .button {

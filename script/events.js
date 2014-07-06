@@ -80,12 +80,14 @@
   function updateEventSearch(qry) {
     var location = encodeURIComponent($('#js_querystring').val())
     var query    = encodeURIComponent($('#event_query').val())
+    $('.event_list').slideUp()
     $.getJSON(backendUrl + '/events/?location=' + location + '&query=' + query)
       .done(function(data) {
         currentData = data
         currentPage = 0
         updateEventList(data, 0)
         updatePagination()
+        $('.event_list').slideDown()
       })
       .fail(function() {
         console.log('backend died. apokalypse?')

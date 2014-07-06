@@ -10,6 +10,9 @@ http.createServer(function(req, res) {
     if(req.url.match(/^\/search/) || req.headers['x-requested-with'] === 'XMLHttpRequest') {
         proxy.web(req, res, function() { console.log(arguments) })
     } else {
+        if(req.url.match(/^\/\?/)) {
+            req.url = 'results.html'
+        }
         filesrv.serve(req, res)
     }
 }).listen(9000)

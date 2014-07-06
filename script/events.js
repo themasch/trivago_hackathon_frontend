@@ -81,7 +81,7 @@
     var location = encodeURIComponent($('#js_querystring').val())
     var query    = encodeURIComponent($('#event_query').val())
     $('.event_list').slideUp()
-    $.getJSON(backendUrl + '/events/?location=' + location + '&query=' + query)
+    $.getJSON(backendUrl + '/events/search/?location=' + location + '&query=' + query)
       .done(function(data) {
         currentData = data
         currentPage = 0
@@ -106,7 +106,7 @@
 
   function submitDownvote(id) {
 
-    $.post(backendUrl + '/events/blockEvent', { id: id }, function(resp) {
+    $.post(backendUrl + '/events/blockItem', { id: id }, function(resp) {
       console.log(resp)
     })
     for(var i=0;i<currentData.length;i++) {

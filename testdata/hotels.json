@@ -36,17 +36,26 @@
 "name":"Galerie Design Hotel Bonn",
 "img":"http://imgec.trivago.com/itemimages/62/93/6293_v3_mc.jpeg",
 "preis":"58",
-"lat":"52.518611",
-"lon":"13.408056"
+"lat":"50.733992",
+"lon":"7.099814"
 },
 {
 "location":"Bonn",
 "name":"Akzent am Hohenzollernplatz",
 "img":"http://imgec.trivago.com/itemimages/62/88/6288_v1_mc.jpeg",
 "preis":"42",
-"lat":"52.518611",
-"lon":"13.408056"
+"lat":"50.732992",
+"lon":"7.091814"
+},
+{
+"location":"Düsseldorf",
+"name":"Innside Düsseldorf Derendorf",
+"img":"http://imgec.trivago.com/itemimages/70/44/704471_v2_mc.jpeg",
+"preis":"242",
+"lat":"51.225556",
+"lon":"6.782778"
 }
+
 
 
 

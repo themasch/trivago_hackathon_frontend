@@ -1,10 +1,8 @@
-
 /**
  * Output the search results (json)
  */
 function showResults(json, location) {
 
-	console.log("location:" + location + json);
 	var results;
 	var where = document.getElementById("js_itemlist");
 
@@ -52,13 +50,13 @@ function showResults(json, location) {
 }
 
 /**
- * Output the search results on map (json)
+ * Output the search results with google maps (json)
  */
-function showMap(json, location) {
+function showMap(json, location, events) {
 
 	var results;
 	var where = document.getElementById("js_itemlist");
-	
+
 	while (where.hasChildNodes()) {
 		where.removeChild(where.lastChild);
 	}
@@ -66,7 +64,7 @@ function showMap(json, location) {
 	var newLi = document.createElement("li");
 	var newDivWrapper = document.createElement("div");
 	newDivWrapper.setAttribute("id", "map_canvas");
-	newDivWrapper.style.width = "500px";
+	newDivWrapper.style.width = "600px";
 	newDivWrapper.style.height = "500px";
 
 	newDivWrapper.innerHTML = "Loading...";
@@ -84,43 +82,67 @@ function showMap(json, location) {
 	var map = new google.maps.Map(document.getElementById('map_canvas'),
 			mapOptions);
 
-	
-	//Add hotel markers
+	var minLat = 0;
+	var minLng = 0;
+	var maxLat = 0;
+	var maxLng = 0;
+
+	// Add hotel markers
 	for ( var hoteldata in json) {
-		
-		var myLatlng = new google.maps.LatLng(json[hoteldata].lat, json[hoteldata].lon);
-		
-		var marker = new google.maps.Marker({
-			position : myLatlng,
-			map : map,
-			title : json[hoteldata].name
-		});
 
+		if (json[hoteldata].location == location) {
+			var myLatlng = new google.maps.LatLng(json[hoteldata].lat,
+					json[hoteldata].lon);
+
+			var marker = new google.maps.Marker({
+				position : myLatlng,
+				map : map,
+				title : json[hoteldata].name
+			});
+			if (minLat > json[hoteldata].lat)
+				minLat = json[hoteldata].lat;
+			if (minLng > json[hoteldata].lng)
+				minLng = json[hoteldata].lng;
+
+			if (maxLat < json[hoteldata].lat)
+				maxLat = json[hoteldata].lat;
+			if (maxLng > json[hoteldata].lng)
+				maxLng = json[hoteldata].lng;
+
+		}
 	}
-	
-	
-	loadDataFromGoogle("Köln", map, callBackCenterMap);
+
+	var address = encodeURIComponent(location);
+	$.getJSON(
+			'https://maps.googleapis.com/maps/api/geocode/json?address='
+					+ address).done(function(json) {
+		var loc = json["results"][0]["geometry"]["location"];
+		map.setCenter(loc, 11);
+
+		/*
+		 * var southWest = new google.maps.LatLng(minLat, minLng); var northEast =
+		 * new google.maps.LatLng(maxLat, maxLng); var bounds = new
+		 * google.maps.LatLngBounds(southWest,northEast); map.fitBounds(bounds);
+		 */
+		map.setZoom(12);
+
+	}).fail(function() {
+		console.log('Cannot load lat and lng data from google.?');
+	})
+
 }
 
+function callBackCenterMap(json, map) {
 
-function callBackCenterMap(json, map){
-	
+	console.log(json);
+	console.log("Wo:" + json["results"][0]["geometry"]["location"]["lat"]);
 
-	console.log(json["results"]);
+	var loc = json["results"][0]["geometry"]["location"];
 
-	var loc = new Object;
-	loc.lat= -22;
-	loc.lng=151;
-	
-	map.setCenter(loc, 13);
+	map.setCenter(loc, 11);
 }
 
-
-function search() {
-
-	var searchFieldValue = document.getElementById("js_querystring").value;
-	var dateFieldFrom = document.getElementById("date_from").innerHTML;
-	var dateFieldTo = document.getElementById("date_to").innerHTML;
+function searchHotels(searchFieldValue, dateFieldFrom, dateFieldTo) {
 
 	var getRequestURL = "./testdata/hotels.json";
 
@@ -128,6 +150,15 @@ function search() {
 			+ " to:" + dateFieldTo);
 
 	loadDataFromTrivago(getRequestURL, showResults, searchFieldValue);
+	
+	var address = encodeURIComponent(location);
+	$.getJSON(getRequestURL).done(function(json) {
+		
+		showResults(json, searchFieldValue);
+
+	}).fail(function() {
+		console.log('Cannot load lat and lng data from trivago database?');
+	})
 }
 
 /**
@@ -153,18 +184,16 @@ function loadDataFromTrivago(url, callBack, location) {
 	xmlhttp.send();
 }
 
-
-
-
 /**
  * Load data from google api
  * 
  * @param callBack
  */
 function loadDataFromGoogle(address, map, callBack) {
-	
-	var url = "https://maps.googleapis.com/maps/api/geocode/json?address="+address;
-	
+
+	var url = "https://maps.googleapis.com/maps/api/geocode/json?address="
+			+ address;
+
 	var xmlhttp;
 	if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
 		xmlhttp = new XMLHttpRequest();
@@ -182,14 +211,29 @@ function loadDataFromGoogle(address, map, callBack) {
 	xmlhttp.send();
 }
 
-
-
-
-
-
+/**
+ * Click on Karte button
+ */
 jQuery("#js_itemlist_controls").on("click", function(event) {
 	event.preventDefault();
 	var searchFieldValue = document.getElementById("js_querystring").value;
 	loadDataFromTrivago("./testdata/hotels.json", showMap, searchFieldValue);
+	console.log("searchField:" + searchFieldValue);
 
 });
+
+
+/**
+ * Click on Search button
+ */
+jQuery("#js_go").on("click", function(event) {
+	event.preventDefault();
+	var searchFieldValue = document.getElementById("js_querystring").value;
+	var dateFieldFrom = document.getElementById("date_from").innerHTML;
+	var dateFieldTo = document.getElementById("date_to").innerHTML;
+
+	
+	searchHotels(searchFieldValue, dateFieldFrom, dateFieldTo);
+
+});
+

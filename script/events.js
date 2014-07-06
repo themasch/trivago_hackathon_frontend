@@ -80,15 +80,21 @@
   function updateEventSearch(qry) {
     var location = encodeURIComponent($('#js_querystring').val())
     var query    = encodeURIComponent($('#event_query').val())
+    $('.event_list').slideUp()
     $.getJSON(backendUrl + '/events/?location=' + location + '&query=' + query)
       .done(function(data) {
         currentData = data
         currentPage = 0
         updateEventList(data, 0)
         updatePagination()
+        $('.event_list').slideDown()
       })
       .fail(function() {
         console.log('backend died. apokalypse?')
+        currentPage = 0
+        currentData = []
+        updateEventList()
+        updatePagination()
       })
   }
 
@@ -202,7 +208,13 @@
   })
 
   $('#js_go').on('click', updateEventSearch)
-  $('#event_query').on('keyup', debounce(updateEventSearch, 300))
+  var lastValue = undefined
+  $('#event_query').on('keyup', debounce(function() {
+    if($('#event_query').val() !== lastValue) {
+      updateEventSearch()
+      lastValue = $('#event_query').val()
+    }
+  }, 500))
   $('.hide_events').on('click', function() {
     $('.event_sidebar').toggle()
   })

@@ -39,6 +39,19 @@
 
   moment.lang('de')
 
+  function debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+      var context = this, args = arguments;
+      clearTimeout(timeout);
+      timeout = setTimeout(function() {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      }, wait);
+      if (immediate && !timeout) func.apply(context, args);
+    };
+  };
+
   function renderEvent(evt) {
     evt.begin_f = moment(evt.begin).format('LLL')
     var tpl = tplFunc(evt)
@@ -189,7 +202,7 @@
   })
 
   $('#js_go').on('click', updateEventSearch)
-
+  $('#event_query').on('keyup', debounce(updateEventSearch, 300))
   $('.hide_events').on('click', function() {
     $('.event_sidebar').toggle()
   })

@@ -1,0 +1,7 @@
+{
+    "name": "trivago-hackathon-frontend",
+    "dependencies": {
+        "http-proxy": "latest",
+        "node-static": "latest"
+    }
+}

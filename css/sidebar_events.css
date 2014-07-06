@@ -3,6 +3,14 @@
   height: auto;
 }
 
+.hide_events {
+background-position: -56px -880px;
+height: 16px;
+width: 16px;
+margin: 9px;
+position: absolute;
+}
+
 .sidebar_buttons {
   float: right;
   width:24px;
@@ -22,20 +30,11 @@
 }
 
 .sidebar_buttons .button.downvote {
-  border-top: 0;
-  background-color: #bf8c1d;
+  border: 0;
 }
 
 .sidebar_buttons .button.downvote span {
-  background-position: -91px -55px;
-}
-.sidebar_buttons .button.upvote span {
-  background-position: -111px -55px;
-}
-
-.sidebar_buttons .button.upvote {
-  background-color: #6dcc3d;
-
+  background-position: -57px -515px;
 }
 
 .paging_buttons .button {
@@ -59,7 +58,7 @@
 #event_popup {
   position: absolute;
   top: 200px;
-  left: 650px;
+  left: 450px;
   z-index: 999999;
 
   background-color: white;
@@ -67,8 +66,8 @@
   border-radius: 2px;
   box-shadow: -1px 0px 3px silver;
 
-  height: 250px;
-  width: 300px;
+  min-height: 250px;
+  width: 500px;
 
   display: none;
 }
@@ -85,4 +84,18 @@
   border-bottom: 25px solid transparent;
   border-left: 25px solid lightblue;
   border-top: 25px solid transparent;
+}
+
+#event_popup h1 {
+  font-weight: bold;
+  font-size: 1.1;
+}
+
+
+#event_popup .content {
+  padding: 5px;
+}
+
+#event_popup img {
+  float: right;
 }

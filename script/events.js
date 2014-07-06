@@ -91,6 +91,10 @@
       })
       .fail(function() {
         console.log('backend died. apokalypse?')
+        currentPage = 0
+        currentData = []
+        updateEventList()
+        updatePagination()
       })
   }
 

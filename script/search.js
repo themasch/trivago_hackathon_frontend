@@ -146,16 +146,9 @@ function searchHotels(searchFieldValue, dateFieldFrom, dateFieldTo) {
 
 	var getRequestURL = "./testdata/hotels.json";
 
-	console.log("location:" + searchFieldValue + " from:" + dateFieldFrom
-			+ " to:" + dateFieldTo);
-
-	loadDataFromTrivago(getRequestURL, showResults, searchFieldValue);
-	
 	var address = encodeURIComponent(location);
 	$.getJSON(getRequestURL).done(function(json) {
-		
 		showResults(json, searchFieldValue);
-
 	}).fail(function() {
 		console.log('Cannot load lat and lng data from trivago database?');
 	})
@@ -167,49 +160,18 @@ function searchHotels(searchFieldValue, dateFieldFrom, dateFieldTo) {
  * @param callBack
  */
 function loadDataFromTrivago(url, callBack, location) {
-	var xmlhttp;
-	if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-		xmlhttp = new XMLHttpRequest();
-	} else {// code for IE6, IE5
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange = function() {
-		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 
-			var json = JSON.parse(xmlhttp.responseText);
-			callBack(json, location);
-		}
-	}
-	xmlhttp.open("GET", url, true);
-	xmlhttp.send();
+	//var address = encodeURIComponent(url);
+	$.getJSON(url).done(function(json) {
+		callBack(json, location, "");
+	}).fail(function() {
+		console.log('Cannot load data from trivago database?');
+	})
+	
+	
 }
 
-/**
- * Load data from google api
- * 
- * @param callBack
- */
-function loadDataFromGoogle(address, map, callBack) {
 
-	var url = "https://maps.googleapis.com/maps/api/geocode/json?address="
-			+ address;
-
-	var xmlhttp;
-	if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-		xmlhttp = new XMLHttpRequest();
-	} else {// code for IE6, IE5
-		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange = function() {
-		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-			var json = JSON.parse(xmlhttp.responseText);
-			callBack(json, map);
-		}
-	}
-	xmlhttp.open("GET", url, true);
-	xmlhttp.send();
-}
 
 /**
  * Click on Karte button
@@ -218,8 +180,6 @@ jQuery("#js_itemlist_controls").on("click", function(event) {
 	event.preventDefault();
 	var searchFieldValue = document.getElementById("js_querystring").value;
 	loadDataFromTrivago("./testdata/hotels.json", showMap, searchFieldValue);
-	console.log("searchField:" + searchFieldValue);
-
 });
 
 
@@ -231,7 +191,6 @@ jQuery("#js_go").on("click", function(event) {
 	var searchFieldValue = document.getElementById("js_querystring").value;
 	var dateFieldFrom = document.getElementById("date_from").innerHTML;
 	var dateFieldTo = document.getElementById("date_to").innerHTML;
-
 	
 	searchHotels(searchFieldValue, dateFieldFrom, dateFieldTo);
 

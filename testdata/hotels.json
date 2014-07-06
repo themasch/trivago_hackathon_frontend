@@ -3,37 +3,49 @@
 "location":"Berlin",
 "name":"Ramada Berlin Alexanderplatz",
 "img":"http://imgec.trivago.com/itemimages/57/42/5742_v3_mc.jpeg",
-"preis":"159"
+"preis":"159",
+"lat":"52.518611",
+"lon":"13.408056"
 },
 {
 "location":"Köln",
 "name":"Hilton Köln",
 "img":"http://imgec.trivago.com/itemimages/64/51/6451_v6_mc.jpeg",
-"preis":"59"
+"preis":"59",
+"lat":"50.94139",
+"lon":"6.95817"
 },
 {
 "location":"Köln",
 "name":"CityClass Europa am Dom",
 "img":"http://imgec.trivago.com/itemimages/64/65/6465_v5_mc.jpeg",
-"preis":"219"
+"preis":"219",
+"lat":"50.96139",
+"lon":"6.93817"
 },
 {
 "location":"Köln",
 "name":" Königshof ",
 "img":"http://imgec.trivago.com/itemimages/64/78/6478_v4_mc.jpeg",
-"preis":"159"
+"preis":"159",
+"lat":"50.92139",
+"lon":"6.97817"
 },
 {
 "location":"Bonn",
 "name":"Galerie Design Hotel Bonn",
 "img":"http://imgec.trivago.com/itemimages/62/93/6293_v3_mc.jpeg",
-"preis":"58"
+"preis":"58",
+"lat":"52.518611",
+"lon":"13.408056"
 },
 {
 "location":"Bonn",
 "name":"Akzent am Hohenzollernplatz",
 "img":"http://imgec.trivago.com/itemimages/62/88/6288_v1_mc.jpeg",
-"preis":"42"
+"preis":"42",
+"lat":"52.518611",
+"lon":"13.408056"
 }
 
 

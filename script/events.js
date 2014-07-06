@@ -53,7 +53,7 @@
 
   function updateEventSearch(qry) {
     var query = encodeURIComponent($('#js_querystring').val())
-    $.getJSON('http://192.168.245.123:8000/events/?query=' + query)
+    $.getJSON('http://192.168.245.123:8000/events/?location=' + query)
       .done(function(data) {
         currentData = data
         currentPage = 0
